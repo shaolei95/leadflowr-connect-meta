@@ -4,32 +4,76 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { ArrowRight, LogIn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useSignIn, useSignUp } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [isSignIn, setIsSignIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { signIn, isLoaded: isSignInLoaded } = useSignIn();
+  const { signUp, isLoaded: isSignUpLoaded } = useSignUp();
 
-  const handleGoogleAuth = () => {
-    // In a real implementation, this would be replaced with actual Google Auth SDK
-    toast({
-      title: "Google Authentication",
-      description: "Google authentication is not yet implemented. This will be connected to a real auth provider.",
-      duration: 5000,
-    });
+  const handleGoogleAuth = async () => {
+    try {
+      setIsLoading(true);
+      if (isSignIn) {
+        await signIn?.authenticateWithRedirect({
+          strategy: "oauth_google",
+          redirectUrl: "/",
+          redirectUrlComplete: "/"
+        });
+      } else {
+        await signUp?.authenticateWithRedirect({
+          strategy: "oauth_google",
+          redirectUrl: "/",
+          redirectUrlComplete: "/"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Authentication Error",
+        description: "Failed to authenticate with Google. Please try again.",
+        duration: 5000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // In a real implementation, this would handle authentication
-    toast({
-      title: isSignIn ? "Sign In Attempt" : "Account Creation Attempt",
-      description: `Email: ${email} (This is just a placeholder - no actual authentication is happening)`,
-      duration: 5000,
-    });
+    try {
+      setIsLoading(true);
+      if (isSignIn) {
+        await signIn?.create({
+          identifier: email,
+          password,
+        });
+      } else {
+        await signUp?.create({
+          emailAddress: email,
+          password,
+        });
+      }
+      navigate("/");
+    } catch (error) {
+      toast({
+        title: "Authentication Error",
+        description: "Failed to authenticate. Please check your credentials and try again.",
+        duration: 5000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (!isSignInLoaded || !isSignUpLoaded) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -50,9 +94,10 @@ const Auth = () => {
             variant="outline"
             className="w-full justify-center gap-2 h-12"
             onClick={handleGoogleAuth}
+            disabled={isLoading}
           >
             <LogIn className="h-5 w-5" />
-            Continue with Google
+            {isLoading ? "Loading..." : "Continue with Google"}
           </Button>
 
           <div className="relative">
@@ -72,6 +117,7 @@ const Auth = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-12"
+                disabled={isLoading}
               />
             </div>
             <div>
@@ -81,10 +127,15 @@ const Auth = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="h-12"
+                disabled={isLoading}
               />
             </div>
-            <Button type="submit" className="w-full h-12 bg-gradient-to-r from-brand-purple to-brand-blue text-white hover:opacity-90">
-              {isSignIn ? "Sign In" : "Create Account"}
+            <Button 
+              type="submit" 
+              className="w-full h-12 bg-gradient-to-r from-brand-purple to-brand-blue text-white hover:opacity-90"
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : (isSignIn ? "Sign In" : "Create Account")}
               <ArrowRight className="ml-2" />
             </Button>
           </form>
