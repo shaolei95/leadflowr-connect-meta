@@ -1,8 +1,10 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Database, Link, Shield } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="pt-28 pb-20 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,7 +17,10 @@ const HeroSection = () => {
               Leadflowr seamlessly integrates your CRM data with Meta's Conversions API in just two simple steps. No code, no hassle.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-gradient-to-r from-brand-purple to-brand-blue text-white hover:opacity-90 transition-opacity h-12 px-8 text-lg">
+              <Button 
+                className="bg-gradient-to-r from-brand-purple to-brand-blue text-white hover:opacity-90 transition-opacity h-12 px-8 text-lg"
+                onClick={() => navigate('/auth')}
+              >
                 Get Started Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>

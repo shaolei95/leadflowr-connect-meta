@@ -1,8 +1,10 @@
 
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-sm border-b border-gray-200">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,10 +33,13 @@ const Navbar = () => {
           </nav>
           
           <div className="flex items-center space-x-4">
-            <Button variant="outline" className="hidden md:inline-flex">
+            <Button variant="outline" className="hidden md:inline-flex" onClick={() => navigate('/auth')}>
               Log In
             </Button>
-            <Button className="bg-gradient-to-r from-brand-purple to-brand-blue text-white hover:opacity-90 transition-opacity">
+            <Button 
+              className="bg-gradient-to-r from-brand-purple to-brand-blue text-white hover:opacity-90 transition-opacity"
+              onClick={() => navigate('/auth')}
+            >
               Get Started
             </Button>
           </div>
