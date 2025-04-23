@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -20,26 +19,33 @@ const Auth = () => {
   const handleGoogleAuth = async () => {
     try {
       setIsLoading(true);
+      
       if (isSignIn) {
-        await signIn?.authenticateWithRedirect({
+        // For sign in with Google
+        if (!signIn) throw new Error("Sign in is not available");
+        
+        await signIn.authenticateWithRedirect({
           strategy: "oauth_google",
           redirectUrl: "/",
           redirectUrlComplete: "/"
         });
       } else {
-        await signUp?.authenticateWithRedirect({
+        // For sign up with Google
+        if (!signUp) throw new Error("Sign up is not available");
+        
+        await signUp.authenticateWithRedirect({
           strategy: "oauth_google",
           redirectUrl: "/",
           redirectUrlComplete: "/"
         });
       }
     } catch (error) {
+      console.error("Google auth error:", error);
       toast({
         title: "Authentication Error",
         description: "Failed to authenticate with Google. Please try again.",
         duration: 5000,
       });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -72,7 +78,7 @@ const Auth = () => {
   };
 
   if (!isSignInLoaded || !isSignUpLoaded) {
-    return null;
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
   return (
