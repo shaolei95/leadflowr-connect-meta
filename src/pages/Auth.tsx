@@ -2,12 +2,34 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LogIn } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Auth = () => {
   const [isSignIn, setIsSignIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { toast } = useToast();
+
+  const handleGoogleAuth = () => {
+    // In a real implementation, this would be replaced with actual Google Auth SDK
+    toast({
+      title: "Google Authentication",
+      description: "Google authentication is not yet implemented. This will be connected to a real auth provider.",
+      duration: 5000,
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // In a real implementation, this would handle authentication
+    toast({
+      title: isSignIn ? "Sign In Attempt" : "Account Creation Attempt",
+      description: `Email: ${email} (This is just a placeholder - no actual authentication is happening)`,
+      duration: 5000,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -27,7 +49,9 @@ const Auth = () => {
           <Button
             variant="outline"
             className="w-full justify-center gap-2 h-12"
+            onClick={handleGoogleAuth}
           >
+            <LogIn className="h-5 w-5" />
             Continue with Google
           </Button>
 
@@ -40,7 +64,7 @@ const Auth = () => {
             </div>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <Input
                 type="email"
@@ -59,7 +83,7 @@ const Auth = () => {
                 className="h-12"
               />
             </div>
-            <Button className="w-full h-12 bg-gradient-to-r from-brand-purple to-brand-blue text-white hover:opacity-90">
+            <Button type="submit" className="w-full h-12 bg-gradient-to-r from-brand-purple to-brand-blue text-white hover:opacity-90">
               {isSignIn ? "Sign In" : "Create Account"}
               <ArrowRight className="ml-2" />
             </Button>
