@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -22,21 +23,31 @@ const Auth = () => {
       
       if (isSignIn) {
         // For sign in with Google
-        if (!signIn) throw new Error("Sign in is not available");
+        if (!signIn) {
+          throw new Error("Sign in is not available");
+        }
+        
+        // Use window.location for redirect
+        const redirectUrl = `${window.location.origin}/`;
         
         await signIn.authenticateWithRedirect({
           strategy: "oauth_google",
-          redirectUrl: "/",
-          redirectUrlComplete: "/"
+          redirectUrl,
+          redirectUrlComplete: redirectUrl
         });
       } else {
         // For sign up with Google
-        if (!signUp) throw new Error("Sign up is not available");
+        if (!signUp) {
+          throw new Error("Sign up is not available");
+        }
+        
+        // Use window.location for redirect
+        const redirectUrl = `${window.location.origin}/`;
         
         await signUp.authenticateWithRedirect({
           strategy: "oauth_google",
-          redirectUrl: "/",
-          redirectUrlComplete: "/"
+          redirectUrl,
+          redirectUrlComplete: redirectUrl
         });
       }
     } catch (error) {
