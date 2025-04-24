@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -37,9 +36,7 @@ const Auth = () => {
         
         await signIn.authenticateWithRedirect({
           strategy: "oauth_google",
-          // Use the newer props instead of redirectUrl
-          fallbackRedirectUrl: baseUrl,
-          forceRedirectUrl: baseUrl,
+          redirectUrl: baseUrl,
         });
       } else {
         // For sign up with Google
@@ -55,9 +52,7 @@ const Auth = () => {
         
         await signUp.authenticateWithRedirect({
           strategy: "oauth_google",
-          // Use the newer props instead of redirectUrl
-          fallbackRedirectUrl: baseUrl,
-          forceRedirectUrl: baseUrl,
+          redirectUrl: baseUrl,
         });
       }
     } catch (error) {

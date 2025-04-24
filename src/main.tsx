@@ -24,10 +24,7 @@ const root = createRoot(rootElement);
 // Wrap the App with ClerkProvider inside a React.StrictMode
 root.render(
   <React.StrictMode>
-    <ClerkProvider 
-      publishableKey={PUBLISHABLE_KEY}
-      // Remove trailing slashes from redirects
-    >
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <App />
     </ClerkProvider>
   </React.StrictMode>
