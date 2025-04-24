@@ -86,7 +86,7 @@ const Auth = () => {
           password,
         });
       }
-      navigate("/");
+      navigate("/dashboard"); // Changed from "/" to "/dashboard"
     } catch (error) {
       toast({
         title: "Authentication Error",

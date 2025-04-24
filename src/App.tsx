@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import IntegrationDashboard from "./pages/IntegrationDashboard";
+import NewIntegration from "./pages/NewIntegration";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +22,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/auth-callback" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/dashboard" element={<IntegrationDashboard />} />
+          <Route path="/new-integration" element={<NewIntegration />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
