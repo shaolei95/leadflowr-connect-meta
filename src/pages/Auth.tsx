@@ -24,30 +24,36 @@ const Auth = () => {
       if (isSignIn) {
         // For sign in with Google
         if (!signIn) {
-          throw new Error("Sign in is not available");
+          toast({
+            title: "Error",
+            description: "Sign in service is not available",
+            duration: 5000,
+          });
+          setIsLoading(false);
+          return;
         }
-        
-        // Use window.location for redirect
-        const redirectUrl = `${window.location.origin}/`;
         
         await signIn.authenticateWithRedirect({
           strategy: "oauth_google",
-          redirectUrl,
-          redirectUrlComplete: redirectUrl
+          redirectUrl: `${window.location.origin}`,
+          redirectUrlComplete: `${window.location.origin}`
         });
       } else {
         // For sign up with Google
         if (!signUp) {
-          throw new Error("Sign up is not available");
+          toast({
+            title: "Error",
+            description: "Sign up service is not available",
+            duration: 5000,
+          });
+          setIsLoading(false);
+          return;
         }
-        
-        // Use window.location for redirect
-        const redirectUrl = `${window.location.origin}/`;
         
         await signUp.authenticateWithRedirect({
           strategy: "oauth_google",
-          redirectUrl,
-          redirectUrlComplete: redirectUrl
+          redirectUrl: `${window.location.origin}`,
+          redirectUrlComplete: `${window.location.origin}`
         });
       }
     } catch (error) {
