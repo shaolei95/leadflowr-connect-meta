@@ -21,6 +21,8 @@ const Auth = () => {
     try {
       setIsLoading(true);
       
+      const baseUrl = window.location.origin;
+      
       if (isSignIn) {
         // For sign in with Google
         if (!signIn) {
@@ -35,8 +37,9 @@ const Auth = () => {
         
         await signIn.authenticateWithRedirect({
           strategy: "oauth_google",
-          redirectUrl: `${window.location.origin}`,
-          redirectUrlComplete: `${window.location.origin}`
+          // Use the newer props instead of redirectUrl
+          fallbackRedirectUrl: baseUrl,
+          forceRedirectUrl: baseUrl,
         });
       } else {
         // For sign up with Google
@@ -52,8 +55,9 @@ const Auth = () => {
         
         await signUp.authenticateWithRedirect({
           strategy: "oauth_google",
-          redirectUrl: `${window.location.origin}`,
-          redirectUrlComplete: `${window.location.origin}`
+          // Use the newer props instead of redirectUrl
+          fallbackRedirectUrl: baseUrl,
+          forceRedirectUrl: baseUrl,
         });
       }
     } catch (error) {

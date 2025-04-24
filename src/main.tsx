@@ -27,7 +27,6 @@ root.render(
     <ClerkProvider 
       publishableKey={PUBLISHABLE_KEY}
       // Remove trailing slashes from redirects
-      redirectUrl={window.location.origin}
     >
       <App />
     </ClerkProvider>
